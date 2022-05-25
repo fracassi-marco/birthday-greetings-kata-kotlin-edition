@@ -1,7 +1,7 @@
 package org.kata
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 
 class XDateTest {
@@ -31,8 +31,7 @@ class XDateTest {
         val different = XDate("2000/01/04")
         assertThat(base.equals(null)).isFalse
         assertThat(base.equals("")).isFalse
-        assertThat(base.equals(base)).isTrue
-        assertThat(base.equals(same)).isTrue
-        assertThat(base.equals(different)).isFalse
+        assertThat(base == same).isTrue
+        assertThat(base == different).isFalse
     }
 }

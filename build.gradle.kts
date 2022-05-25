@@ -13,12 +13,15 @@ repositories {
 
 dependencies {
     implementation("javax.mail:mail:1.4")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.8.2")
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(kotlin("test"))
     testImplementation("dumbster:dumbster:1.6")
     testImplementation("org.assertj:assertj-core:3.22.0")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

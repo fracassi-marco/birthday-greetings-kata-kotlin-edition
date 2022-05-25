@@ -3,20 +3,20 @@ package org.kata
 import com.dumbster.smtp.SimpleSmtpServer
 import com.dumbster.smtp.SmtpMessage
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class AcceptanceTest {
     private val birthdayService: BirthdayService = BirthdayService()
     private lateinit var mailServer: SimpleSmtpServer
 
-    @Before
+    @BeforeEach
     fun setUp() {
         mailServer = SimpleSmtpServer.start(NONSTANDARD_PORT)
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         mailServer.stop()
         Thread.sleep(200)
@@ -25,9 +25,9 @@ class AcceptanceTest {
     @Test
     fun willSendGreetings_whenItsSomebodysBirthday() {
         birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"), "localhost", NONSTANDARD_PORT)
-        assertThat(mailServer.getReceivedEmailSize()).isEqualTo(1)
-        val message: SmtpMessage = mailServer.getReceivedEmail().next() as SmtpMessage
-        assertThat(message.getBody()).isEqualTo("Happy Birthday, dear John!")
+        assertThat(mailServer.receivedEmailSize).isEqualTo(1)
+        val message: SmtpMessage = mailServer.receivedEmail.next() as SmtpMessage
+        assertThat(message.body).isEqualTo("Happy Birthday, dear John!")
         assertThat(message.getHeaderValue("Subject")).isEqualTo("Happy Birthday!")
         val recipients: Array<String> = message.getHeaderValues("To")
         assertThat(recipients.size).isEqualTo(1)
