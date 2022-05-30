@@ -26,10 +26,10 @@ class AcceptanceTest {
     fun willSendGreetings_whenItsSomebodysBirthday() {
         birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"), "localhost", NONSTANDARD_PORT)
         assertThat(mailServer.receivedEmailSize).isEqualTo(1)
-        val message: SmtpMessage = mailServer.receivedEmail.next() as SmtpMessage
+        val message = mailServer.receivedEmail.next() as SmtpMessage
         assertThat(message.body).isEqualTo("Happy Birthday, dear John!")
         assertThat(message.getHeaderValue("Subject")).isEqualTo("Happy Birthday!")
-        val recipients: Array<String> = message.getHeaderValues("To")
+        val recipients = message.getHeaderValues("To")
         assertThat(recipients.size).isEqualTo(1)
         assertThat(recipients[0]).isEqualTo("john.doe@foobar.com")
     }
