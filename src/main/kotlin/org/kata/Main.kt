@@ -1,6 +1,8 @@
 package org.kata
 
 fun main() {
-    val service = BirthdayService(EmailNotifier("localhost", 25))
-    service.sendGreetings("employee_data.txt", XDate())
+    BirthdayService(
+        EmailNotifier("localhost", 25),
+        FileEmployeeRepository("employee_data.txt")
+    ).sendGreetings(XDate())
 }
