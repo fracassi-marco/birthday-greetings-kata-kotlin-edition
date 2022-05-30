@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class AcceptanceTest {
-    private val birthdayService: BirthdayService = BirthdayService()
+    private val birthdayService: BirthdayService = BirthdayService(EmailNotifier("localhost", NONSTANDARD_PORT))
     private lateinit var mailServer: SimpleSmtpServer
 
     @BeforeEach
@@ -24,7 +24,7 @@ class AcceptanceTest {
 
     @Test
     fun willSendGreetings_whenItsSomebodysBirthday() {
-        birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"), "localhost", NONSTANDARD_PORT)
+        birthdayService.sendGreetings("employee_data.txt", XDate("2008/10/08"))
         assertThat(mailServer.receivedEmailSize).isEqualTo(1)
         val message = mailServer.receivedEmail.next() as SmtpMessage
         assertThat(message.body).isEqualTo("Happy Birthday, dear John!")
@@ -36,7 +36,7 @@ class AcceptanceTest {
 
     @Test
     fun willNotSendEmailsWhenNobodysBirthday() {
-        birthdayService.sendGreetings("employee_data.txt", XDate("2008/01/01"), "localhost", NONSTANDARD_PORT)
+        birthdayService.sendGreetings("employee_data.txt", XDate("2008/01/01"))
         assertThat(mailServer.receivedEmailSize).isEqualTo(0)
     }
 
