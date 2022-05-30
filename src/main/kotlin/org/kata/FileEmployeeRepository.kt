@@ -6,12 +6,13 @@ import java.io.FileReader
 class FileEmployeeRepository(private val fileName: String): EmployeeRepository {
 
     override fun all(): List<Employee> {
-        val employees = ArrayList<Employee>()
-        val `in` = BufferedReader(FileReader(fileName))
-        `in`.readLines().drop(1).forEach { str ->
-            val employeeData = str.split(", ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            employees.add(Employee(employeeData[1], employeeData[0], employeeData[2], employeeData[3]))
+        return lines().skipHeader()
+            .map { line -> line.split(", ") }
+            .map { fields -> Employee(fields[1], fields[0], fields[2], fields[3])
         }
-        return employees
     }
+
+    private fun lines() = BufferedReader(FileReader(fileName)).readLines()
+
+    private fun List<String>.skipHeader() = this.drop(1)
 }
